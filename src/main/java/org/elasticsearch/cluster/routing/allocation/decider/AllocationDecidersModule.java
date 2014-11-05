@@ -19,7 +19,7 @@
 
 package org.elasticsearch.cluster.routing.allocation.decider;
 
-import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import org.elasticsearch.common.inject.AbstractModule;
 import org.elasticsearch.common.inject.multibindings.Multibinder;
@@ -62,7 +62,8 @@ public class AllocationDecidersModule extends AbstractModule {
         bind(AllocationDeciders.class).asEagerSingleton();
     }
 
-    public static final ImmutableSet<Class<? extends AllocationDecider>> DEFAULT_ALLOCATION_DECIDERS = ImmutableSet.<Class<? extends AllocationDecider>>builder().
+    public static final ImmutableList<Class<? extends AllocationDecider>> DEFAULT_ALLOCATION_DECIDERS = ImmutableList.<Class<? extends AllocationDecider>>builder().
+            add(EnableAllocationDecider.class). // new enable allocation logic should proceed old disable allocation logic
             add(SameShardAllocationDecider.class).
             add(FilterAllocationDecider.class).
             add(ReplicaAfterPrimaryActiveAllocationDecider.class).
@@ -70,7 +71,6 @@ public class AllocationDecidersModule extends AbstractModule {
             add(RebalanceOnlyWhenActiveAllocationDecider.class).
             add(ClusterRebalanceAllocationDecider.class).
             add(ConcurrentRebalanceAllocationDecider.class).
-            add(EnableAllocationDecider.class). // new enable allocation logic should proceed old disable allocation logic
             add(DisableAllocationDecider.class).
             add(AwarenessAllocationDecider.class).
             add(ShardsLimitAllocationDecider.class).

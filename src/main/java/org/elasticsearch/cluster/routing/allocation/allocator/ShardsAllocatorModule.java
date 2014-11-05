@@ -27,6 +27,8 @@ import org.elasticsearch.gateway.none.NoneGatewayAllocator;
  */
 public class ShardsAllocatorModule extends AbstractModule {
 
+    public static final String ROUND_ROBIN_ALLOCATOR_KEY = "round_robin";
+
     public static final String EVEN_SHARD_COUNT_ALLOCATOR_KEY = "even_shard";
 
     public static final String BALANCED_ALLOCATOR_KEY = "balanced"; // default
@@ -68,6 +70,8 @@ public class ShardsAllocatorModule extends AbstractModule {
             shardsAllocator = BalancedShardsAllocator.class;
         } else if (EVEN_SHARD_COUNT_ALLOCATOR_KEY.equals(type)) {
             shardsAllocator = EvenShardsCountAllocator.class;
+        } else if (ROUND_ROBIN_ALLOCATOR_KEY.equals(type)) {
+            shardsAllocator = RoundRobinUnassignedShardsAllocator.class;
         } else {
             shardsAllocator = settings.getAsClass(TYPE_KEY, BalancedShardsAllocator.class,
                     "org.elasticsearch.cluster.routing.allocation.allocator.", "Allocator");
